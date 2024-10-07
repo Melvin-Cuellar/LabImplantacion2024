@@ -15,8 +15,11 @@
                     <input type="email" class="form-control" name="email" placeholder="Correo del estudiante" />
                 </div>
                 <div class="form-group">
-                    <select class="form-control">
+                    <select class="form-control" name="idcarrera">
                         <option>Seleccione una opcion</option>
+                        {{#each carreras}}
+                            <option value="{{this.idcarrera}}">{{this.carrera}}</option>
+                        {{/each}}                       
                     </select>
                 </div>
                 <div class="form-group">
