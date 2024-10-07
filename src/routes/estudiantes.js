@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('../repositories/EstudianteRepository');
+const { emit } = require('nodemon');
 
 function desplazarLetra(letra) {
     // Desplazar la letra a la siguiente en el alfabeto
@@ -68,6 +69,41 @@ router.post('/agregar', async(request, response) => {
     } else {
         response.status(500).send('Error al agregar el estudiante');
     }
+});
+
+// Endpoint que permite mostrar el formulario para editar un estudiante
+router.get('/editar/:idestudiante', async (request, response) => {
+    const { idestudiante } = request.params; // Extraemos el ID del estudiante a editar
+    const estudiante = await queries.obtenerEstudiantePorId(idestudiante);
+    let carreras = await queries.obtenerTodasLasCarreras(); // Obtener las carreras de la base de datos
+    console.log("Lista de carreras:", carreras);
+    if (estudiante) {
+        // Marcar la carrera seleccionada
+        carreras = carreras.map(carrera => {
+            return {
+                ...carrera,
+                selected: carrera.idcarrera === estudiante.idcarrera // Marcar la carrera si coincide
+            };
+        });
+        console.log("Hasta aquí todo bien", idestudiante, estudiante.nombre, estudiante.apellido, estudiante.email, estudiante.idcarrera, estudiante.usuario);
+        console.log("Lista de carreras:", carreras);
+        response.render('estudiantes/editar', { estudiante, carreras }); // Renderizamos el formulario de edición con los datos del estudiante
+    } else {
+        response.status(404).send('Estudiante no encontrado');
+    }
+});
+
+// Endpoint para editar un estudiante
+router.post('/editar/:idestudiante', async (request, response) => {
+    const { idestudiante } = request.params;
+    const { nombre, apellido, email, idcarrera, usuario } = request.body;
+    const resultado = await queries.actualizarEstudiante(idestudiante, { nombre, apellido, email, idcarrera, usuario });
+    if (resultado) {
+        console.log('Estudiante actualizado con éxito');
+    } else {
+        response.status(500).send('Error al actualizar el estudiante');
+    }
+    response.redirect('/estudiantes');
 });
 
 // Endpoint que permite eliminar un estudiante

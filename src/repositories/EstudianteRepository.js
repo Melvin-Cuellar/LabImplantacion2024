@@ -46,7 +46,20 @@ module.exports = {
         }
     },
 
-
+    // Actualizar un estudiante
+    actualizarEstudiante: async (idestudiante, estudianteActualizado) => {
+        try {
+            const { nombre, apellido, email, idcarrera, usuario } = estudianteActualizado;
+            const result = await pool.query(
+                'UPDATE estudiantes SET nombre = ?, apellido = ?, email = ?, idcarrera = ?, usuario = ? WHERE idestudiante = ?',
+                [nombre, apellido, email, idcarrera, usuario, idestudiante]
+            );
+            return result.affectedRows > 0;  // Retornamos si se actualizó correctamente
+        } catch (error) {
+            console.error('Ocurrió un problema al actualizar el estudiante: ', error);
+        }
+    },
+    
     // Eliminar un estudiante
     eliminarEstudiante: async(idestudiante) => {
         try{

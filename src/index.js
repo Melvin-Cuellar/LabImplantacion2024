@@ -3,6 +3,13 @@ const morgan = require('morgan');
 const exphbs = require('express-handlebars'); // Necesario para utilizar el motor de plantillas handlebars
 const path = require('path');
 
+const handlebars = require('handlebars');
+
+// Registrar un helper llamado 'isEqual'
+handlebars.registerHelper('isEqual', function (a, b) {
+    return a === b; // Realiza la comparación estricta
+});
+
 // Inicializaciones
 const app = express();
 
