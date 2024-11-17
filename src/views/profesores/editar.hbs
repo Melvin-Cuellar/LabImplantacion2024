@@ -1,0 +1,35 @@
+<div class="container p-4">
+    <div class="row justify-content-center">
+        <h1>Editar Profesor</h1>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-4">
+            <form method="POST">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="nombre" value="{{profesor.nombre}}" required />
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="apellido" value="{{profesor.apellido}}" required />
+                </div>
+                <div class="form-group">
+                    <input type="date" class="form-control" name="fecha_nacimiento" value="{{profesor.fecha_nacimiento}}" required />
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="profesion" value="{{profesor.profesion}}" required />
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="genero" required>
+                        <option value="M" {{#ifCond profesor.genero '==' 'M'}}selected{{/ifCond}}>Masculino</option>
+                        <option value="F" {{#ifCond profesor.genero '==' 'F'}}selected{{/ifCond}}>Femenino</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" name="email" value="{{profesor.email}}" required />
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

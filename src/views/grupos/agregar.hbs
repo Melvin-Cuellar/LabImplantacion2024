@@ -1,0 +1,45 @@
+<div class="container p-4">
+    <div class="row justify-content-center">
+        <h1>Agregar Grupo</h1>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-4">
+            <form method="POST">
+                <!-- Campo Número de Grupo -->
+                <div class="form-group">
+                    <input type="text" class="form-control" name="num_grupo" placeholder="Número de Grupo" required />
+                </div>
+                <!-- Campo Año -->
+                <div class="form-group">
+                    <input type="number" class="form-control" name="anio" placeholder="Año" required />
+                </div>
+                <!-- Campo Ciclo -->
+                <div class="form-group">
+                    <input type="text" class="form-control" name="ciclo" placeholder="Ciclo" required />
+                </div>
+                <!-- Selección de Materia -->
+                <div class="form-group">
+                    <select class="form-control" name="idmateria" required>
+                        <option value="">Seleccione una Materia</option>
+                        {{#each materias}}
+                            <option value="{{idmateria}}">{{materia}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <!-- Selección de Profesor -->
+                <div class="form-group">
+                    <select class="form-control" name="idprofesor" required>
+                        <option value="">Seleccione un Profesor</option>
+                        {{#each profesores}}
+                            <option value="{{idprofesor}}">{{nombre}} {{apellido}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <!-- Botón de guardar -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-block">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

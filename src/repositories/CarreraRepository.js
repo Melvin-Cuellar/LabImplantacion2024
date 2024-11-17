@@ -56,7 +56,7 @@ module.exports = {
             const result = await pool.query('DELETE FROM carreras WHERE idcarrera = ?', [idcarrera]);
             return result.affectedRows > 0;
         }catch(error){
-            console.error('Erro al eliminar el registro', error);
+            console.error('Ocurrio un problema al eliminar el registro', error);
         }
     }
 }

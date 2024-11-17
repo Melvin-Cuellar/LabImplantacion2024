@@ -1,0 +1,39 @@
+<div class="container p-4">
+    <div class="row justify-content-center">
+        <h1>Modificar Grupo Estudiante</h1>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-4">
+            <form method="POST">
+                <!-- Campo de Selección de Grupo -->
+                <div class="form-group">
+                    <label for="idgrupo">Grupo</label>
+                    <select class="form-control" name="idgrupo" id="idgrupo" required>
+                        {{#each grupos}}
+                            <option value="{{idgrupo}}" {{#if (eq idgrupo ../grupoEstudiante.idgrupo)}}selected{{/if}}>
+                                {{num_grupo}}
+                            </option>
+                        {{/each}}
+                    </select>
+                </div>
+
+                <!-- Campo de Selección de Estudiante -->
+                <div class="form-group">
+                    <label for="idestudiante">Estudiante</label>
+                    <select class="form-control" name="idestudiante" id="idestudiante" required>
+                        {{#each estudiantes}}
+                            <option value="{{idestudiante}}" {{#if (eq idestudiante ../grupoEstudiante.idestudiante)}}selected{{/if}}>
+                                {{nombre}} {{apellido}}
+                            </option>
+                        {{/each}}
+                    </select>
+                </div>
+
+                <!-- Botón de actualización -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

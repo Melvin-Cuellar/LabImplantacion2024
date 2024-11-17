@@ -1,0 +1,49 @@
+<div class="container p-4">
+    <div class="row justify-content-center">
+        <h1>Modificar Grupo</h1>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-4">
+            <form method="POST">
+                <!-- Campo Num. Grupo -->
+                <div class="form-group">
+                    <input type="text" class="form-control" name="num_grupo" value="{{grupo.num_grupo}}" required />
+                </div>
+                <!-- Campo Año -->
+                <div class="form-group">
+                    <input type="number" class="form-control" name="anio" value="{{grupo.anio}}" required />
+                </div>
+                <!-- Campo Ciclo -->
+                <div class="form-group">
+                    <input type="text" class="form-control" name="ciclo" value="{{grupo.ciclo}}" required />
+                </div>
+                <!-- Selección de Materia -->
+                <div class="form-group">
+                    <label>Materia</label>
+                    <select class="form-control" name="idmateria" required>
+                        {{#each materias}}
+                            <option value="{{idmateria}}" {{#if (eq idmateria ../grupo.idmateria)}}selected{{/if}}>
+                                {{materia}}
+                            </option>
+                        {{/each}}
+                    </select>
+                </div>
+                <!-- Selección de Profesor -->
+                <div class="form-group">
+                    <label>Profesor</label>
+                    <select class="form-control" name="idprofesor" required>
+                        {{#each profesores}}
+                            <option value="{{idprofesor}}" {{#if (eq idprofesor ../grupo.idprofesor)}}selected{{/if}}>
+                                {{nombre}} {{apellido}}
+                            </option>
+                        {{/each}}
+                    </select>
+                </div>
+                <!-- Botón de actualización -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -6,16 +6,16 @@
         <div class="col-md-4">
             <form method="POST">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="nombre" placeholder="Nombre del estudiante" autofocus />
+                    <input type="text" class="form-control" name="nombre" placeholder="Nombre del estudiante" autofocus required/>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="apellido" placeholder="Apellido del estudiante" />
+                    <input type="text" class="form-control" name="apellido" placeholder="Apellido del estudiante" required/>
                 </div>
                 <div class="form-group">
-                    <input type="email" class="form-control" name="email" placeholder="Correo del estudiante" />
+                    <input type="email" class="form-control" name="email" placeholder="Correo del estudiante" required/>
                 </div>
                 <div class="form-group">
-                    <select class="form-control" name="idcarrera">
+                    <select class="form-control" name="idcarrera" required>
                         <option>Seleccione una opcion</option>
                         {{#each carreras}}
                             <option value="{{this.idcarrera}}">{{this.carrera}}</option>
@@ -23,7 +23,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="usuario" placeholder="Usuario del estudiante" />
+                    <input type="text" class="form-control" name="usuario" placeholder="Usuario del estudiante" required/>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success btn-block">Guardar</button>

@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
 const { promisify } = require('util');
 const { database } = require('./keys');
-const { CONSTANTS } = require('../../utils/utils.js');
+const { CONSTANTS } = require('../utils/utils.js');
 
 const pool = mysql.createPool(database); //Se crea el pool de conexiones
 

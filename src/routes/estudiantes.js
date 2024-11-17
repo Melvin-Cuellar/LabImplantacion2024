@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const queries = require('../repositories/EstudianteRepository');
 const { emit } = require('nodemon');
+const { isLoggedIn } = require('../lib/auth');
 
 function desplazarLetra(letra) {
     // Desplazar la letra a la siguiente en el alfabeto
@@ -43,36 +44,38 @@ async function generarIdNuevo(nombre, apellido, idcarrera) {
 }
 
 // Endpoint para mostrar todos los estudiantes
-router.get('/', async (request, response) => {
+router.get('/', isLoggedIn, async (request, response) => {
     const estudiantes = await queries.obtenerTodosLosEstudiantes();
     response.render('estudiantes/listado', {estudiantes}); // Mostramos el listado de estudiantes
 });
 
 // Endpoint que permite mostrar el formulario para agregar un nuevo estudiante
-router.get('/agregar', async(request, response) => {
+router.get('/agregar', isLoggedIn, async(request, response) => {
     // Renderizamos el formulario
     const carreras = await queries.obtenerTodasLasCarreras(); // Obtener las carreras de la base de datos
     response.render('estudiantes/agregar', {carreras}); //Enviar las carreras a la vista
 });
 
 // Endpoint para agregar un estudiante
-router.post('/agregar', async(request, response) => {
+router.post('/agregar', isLoggedIn, async(request, response) => {
     const { nombre, apellido, email, idcarrera, usuario } = request.body; // Extraemos los datos del formulario
     
     const IdGenerado = await generarIdNuevo(nombre, apellido, idcarrera);
     console.log('ID generado:', IdGenerado); // Log del ID generado
 
     const resultado = await queries.crearEstudiante({ idestudiante : IdGenerado, nombre, apellido, email, idcarrera, usuario });
+    
     if (resultado) {
-        console.log('Estudiante agregado con éxito');
-        response.redirect('/estudiantes'); // Redirigimos al listado de estudiantes
+        request.flash('success', 'Estudiante agregado con éxito');
     } else {
-        response.status(500).send('Error al agregar el estudiante');
+        request.flash('error', 'Error al agregar el estudiante');
     }
+
+    response.redirect('/estudiantes'); // Redirigimos al listado de estudiantes
 });
 
 // Endpoint que permite mostrar el formulario para editar un estudiante
-router.get('/editar/:idestudiante', async (request, response) => {
+router.get('/editar/:idestudiante', isLoggedIn, async (request, response) => {
     const { idestudiante } = request.params; // Extraemos el ID del estudiante a editar
     const estudiante = await queries.obtenerEstudiantePorId(idestudiante);
     let carreras = await queries.obtenerTodasLasCarreras(); // Obtener las carreras de la base de datos
@@ -85,8 +88,6 @@ router.get('/editar/:idestudiante', async (request, response) => {
                 selected: carrera.idcarrera === estudiante.idcarrera // Marcar la carrera si coincide
             };
         });
-        console.log("Hasta aquí todo bien", idestudiante, estudiante.nombre, estudiante.apellido, estudiante.email, estudiante.idcarrera, estudiante.usuario);
-        console.log("Lista de carreras:", carreras);
         response.render('estudiantes/editar', { estudiante, carreras }); // Renderizamos el formulario de edición con los datos del estudiante
     } else {
         response.status(404).send('Estudiante no encontrado');
@@ -94,28 +95,32 @@ router.get('/editar/:idestudiante', async (request, response) => {
 });
 
 // Endpoint para editar un estudiante
-router.post('/editar/:idestudiante', async (request, response) => {
+router.post('/editar/:idestudiante', isLoggedIn, async (request, response) => {
     const { idestudiante } = request.params;
     const { nombre, apellido, email, idcarrera, usuario } = request.body;
     const resultado = await queries.actualizarEstudiante(idestudiante, { nombre, apellido, email, idcarrera, usuario });
+    
     if (resultado) {
-        console.log('Estudiante actualizado con éxito');
+        request.flash('success', 'Estudiante actualizado con éxito');
     } else {
-        response.status(500).send('Error al actualizar el estudiante');
+        request.flash('error', 'Error al actualizar el estudiante');
     }
+
     response.redirect('/estudiantes');
 });
 
 // Endpoint que permite eliminar un estudiante
-router.get('/eliminar/:idestudiante', async(request, response) => {
+router.get('/eliminar/:idestudiante', isLoggedIn, async(request, response) => {
     // Desestructuramos el objeto que nos mandan en la peticion y extraemos el idestudiante
     const { idestudiante } = request.params;
     const resultado = await queries.eliminarEstudiante(idestudiante);
+    
     if (resultado) {
-        console.log('Estudiante eliminado con éxito');
-        response.redirect('/estudiantes'); // Redirigimos al listado de estudiantes
+        request.flash('success', 'Estudiante eliminado con éxito');
     } else {
-        response.status(500).send('Error al eliminar el estudiante');
+        request.flash('error', 'Error al eliminar el estudiante');
     }
+
+    response.redirect('/estudiantes'); // Redirigimos al listado de estudiantes
 });
 module.exports = router;
